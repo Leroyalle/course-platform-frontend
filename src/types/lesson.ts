@@ -1,3 +1,5 @@
+import { Course } from './course';
+
 export interface Lesson {
   id: string;
   title: string;
@@ -5,3 +7,5 @@ export interface Lesson {
   completed: boolean;
   content: string;
 }
+
+export type LessonWithCourse = Lesson & { course: Course };

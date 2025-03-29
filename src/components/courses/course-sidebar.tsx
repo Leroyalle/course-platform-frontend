@@ -20,7 +20,7 @@ export function CourseSidebar({ courseId, lessons, progress, completedCount }: C
             <span>
               {completedCount} of {lessons.length} lessons completed
             </span>
-            <span>{progress.toFixed(0)}%</span>
+            <span>{(progress || 0).toFixed(0)}%</span>
           </div>
           <Progress value={progress} className="mt-2" />
         </CardDescription>

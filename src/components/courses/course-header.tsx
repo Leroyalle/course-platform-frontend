@@ -1,12 +1,11 @@
 import { BookOpen, Clock } from 'lucide-react';
-import type { Course } from '@/types/course';
+import type { CourseWithLessons } from '@/types/course';
 
 interface CourseHeaderProps {
-  course: Course;
+  course: CourseWithLessons;
 }
 
 export function CourseHeader({ course }: CourseHeaderProps) {
-  console.log(course);
   return (
     <>
       <div className="rounded-lg overflow-hidden mb-6">
@@ -21,7 +20,7 @@ export function CourseHeader({ course }: CourseHeaderProps) {
       <div className="flex items-center gap-4 mb-6">
         <div className="flex items-center gap-1">
           <BookOpen className="h-4 w-4 text-muted-foreground" />
-          <span className="text-sm text-muted-foreground">{course.totalLessons} lessons</span>
+          <span className="text-sm text-muted-foreground">{course.lessons.length} уроков</span>
         </div>
         <div className="flex items-center gap-1">
           <Clock className="h-4 w-4 text-muted-foreground" />

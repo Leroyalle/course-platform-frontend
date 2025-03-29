@@ -1,24 +1,33 @@
+'use client';
 import { Button } from '@/components/ui/button';
-
-import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
 import { LessonContent, LessonNavigation, LessonSidebar } from '@/components';
-import { getAdjacentLessons, getLessonById } from '@/lib/data/lessons';
-import { getCourseById } from '@/lib/data/courses';
+import { getAdjacentLessons } from '@/lib/data/lessons';
+import { useEffect } from 'react';
+import { lessonStore } from '@/store';
+import { observer } from 'mobx-react-lite';
 
 interface Props {
   courseId: string;
   lessonId: string;
 }
 
-export const LessonWrapper: React.FC<Props> = ({ courseId, lessonId }) => {
-  const course = getCourseById(courseId);
-  const lesson = getLessonById(lessonId);
+export const LessonWrapper: React.FC<Props> = observer(({ courseId, lessonId }) => {
+  useEffect(() => {
+    lessonStore.getById(lessonId);
+  }, [courseId, lessonId]);
 
-  if (!course || !lesson) {
-    notFound();
+  if (lessonStore.lesson?.state === 'pending') {
+    return <div>Loading...</div>;
   }
+
+  if (lessonStore.lesson?.state === 'rejected') {
+    return <div>Error</div>;
+  }
+  const lesson = lessonStore.lesson?.value;
+
+  if (!lesson) return null;
 
   const { previousLesson, nextLesson } = getAdjacentLessons(courseId, lessonId);
 
@@ -31,7 +40,7 @@ export const LessonWrapper: React.FC<Props> = ({ courseId, lessonId }) => {
             Back to Course
           </Button>
         </Link>
-        <h1 className="text-2xl font-bold">{course.title}</h1>
+        <h1 className="text-2xl font-bold">{lesson.course.title}</h1>
         <div className="w-[100px]"></div>
       </div>
 
@@ -50,4 +59,4 @@ export const LessonWrapper: React.FC<Props> = ({ courseId, lessonId }) => {
       </div>
     </div>
   );
-};
+});

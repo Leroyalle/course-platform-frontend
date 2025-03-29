@@ -1,8 +1,20 @@
+'use client';
 import { CourseCard } from '@/components/courses/course-card';
-import { getAllCourses } from '@/lib/data/courses';
+import { courseStore } from '@/store';
+import { observer } from 'mobx-react-lite';
 
-export function CourseGrid() {
-  const courses = getAllCourses();
+export const CourseGrid = observer(() => {
+  if (courseStore.courses?.state === 'pending') {
+    return <div>Loading...</div>;
+  }
+  if (courseStore.courses?.state === 'rejected') {
+    return <div>Error</div>;
+  }
+
+  const courses = courseStore.courses?.value;
+
+  if (!courses) return;
+
   return (
     <section>
       <h2 className="text-2xl font-semibold mb-6">Featured Courses</h2>
@@ -13,4 +25,4 @@ export function CourseGrid() {
       </div>
     </section>
   );
-}
+});

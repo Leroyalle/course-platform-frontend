@@ -1,21 +1,34 @@
-import type { FC } from 'react';
+'use client';
+import { useEffect, type FC } from 'react';
 import { clsx } from 'clsx';
 import { CourseContent, CourseHeader, CourseInstructor, CourseSidebar } from '@/components';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
-import { getCourseById } from '@/lib/data/courses';
-import { getLessonsByCourseId } from '@/lib/data/lessons';
+import { courseStore } from '@/store';
+import { observer } from 'mobx-react-lite';
 
 interface Props {
   courseId: string;
   className?: string;
 }
 
-export const CoursesWrapper: FC<Props> = ({ courseId, className }) => {
-  const course = getCourseById(courseId);
+export const CoursesWrapper: FC<Props> = observer(({ courseId, className }) => {
+  useEffect(() => {
+    courseStore.getById(courseId);
+  }, [courseId]);
+
+  if (courseStore.currentCourse?.state === 'pending') {
+    return <div>Loading...</div>;
+  }
+
+  if (courseStore.currentCourse?.state === 'rejected') {
+    return <div>Error</div>;
+  }
+
+  const course = courseStore.currentCourse?.value;
   if (!course) return null;
-  const lessons = getLessonsByCourseId('1');
-  const completedLessons = lessons.filter((lesson) => lesson.completed).length;
-  const progressPercentage = (completedLessons / lessons.length) * 100;
+
+  const completedLessons = course.lessons.filter((lesson) => lesson.completed).length;
+  const progressPercentage = (completedLessons / course.lessons.length) * 100;
 
   return (
     <div className={clsx('container mx-auto py-10', className)}>
@@ -36,7 +49,7 @@ export const CoursesWrapper: FC<Props> = ({ courseId, className }) => {
         <div>
           <CourseSidebar
             courseId={courseId}
-            lessons={lessons}
+            lessons={course.lessons}
             progress={progressPercentage}
             completedCount={completedLessons}
           />
@@ -44,4 +57,4 @@ export const CoursesWrapper: FC<Props> = ({ courseId, className }) => {
       </div>
     </div>
   );
-};
+});

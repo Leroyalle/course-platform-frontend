@@ -1,18 +1,21 @@
 import { courseService } from '@/services';
+import { CourseWithLessons } from '@/types';
 import { makeAutoObservable } from 'mobx';
-
+import { IPromiseBasedObservable, fromPromise } from 'mobx-utils';
 class CourseStore {
   constructor() {
     makeAutoObservable(this);
   }
-  value = 0;
-  courses = [];
 
-  increment() {
-    this.value++;
-  }
+  courses?: IPromiseBasedObservable<CourseWithLessons[]>;
+  currentCourse?: IPromiseBasedObservable<CourseWithLessons>;
+
   async getAll() {
-    this.courses = await courseService.getAll();
+    this.courses = fromPromise(courseService.getAll());
+  }
+
+  async getById(id: string) {
+    this.currentCourse = fromPromise(courseService.getById(id));
   }
 }
 
