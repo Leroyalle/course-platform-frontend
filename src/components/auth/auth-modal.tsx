@@ -10,6 +10,7 @@ import { profileStore } from '@/store';
 import { authService } from '@/services';
 import { Login } from '@/types';
 import { createCookie } from '@/app/actions';
+import { observer } from 'mobx-react-lite';
 
 type AuthView = 'login' | 'register' | 'verify';
 
@@ -18,20 +19,28 @@ interface Props {
   onClose: () => void;
 }
 
-export function AuthModal({ isOpen, onClose }: Props) {
+export const AuthModal = observer(({ isOpen, onClose }: Props) => {
   const [view, setView] = useState<AuthView>('login');
-  const [email, setEmail] = useState('');
+  const [verifyData, setVerifyData] = useState({
+    email: '',
+    userId: '',
+  });
+
+  console.log(profileStore.me?.value);
 
   const handleRegister = async (data: { name: string; email: string; password: string }) => {
-    setEmail(data.email);
-    await authService.register(data);
+    const { userId } = await authService.register(data);
+    setVerifyData({
+      email: data.email,
+      userId,
+    });
     setView('verify');
   };
 
   const handleLogin = async (data: Login) => {
     const { token } = await authService.login(data);
     await createCookie('token', token);
-    await authService.current();
+    await profileStore.current();
     onClose();
   };
 
@@ -50,7 +59,7 @@ export function AuthModal({ isOpen, onClose }: Props) {
 
         {view === 'register' && <RegisterForm onSubmit={handleRegister} />}
 
-        {view === 'verify' && <VerifyForm email={email} onSuccess={onClose} />}
+        {view === 'verify' && <VerifyForm verifyData={verifyData} onSuccess={onClose} />}
 
         {view !== 'verify' && (
           <div className="mt-4 text-center text-sm">
@@ -78,4 +87,4 @@ export function AuthModal({ isOpen, onClose }: Props) {
       </DialogContent>
     </Dialog>
   );
-}
+});

@@ -1,21 +1,29 @@
+import { authService } from '@/services';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 
 interface Props {
-  email: string;
+  verifyData: {
+    email: string;
+    userId: string;
+  };
   onSuccess: () => void;
 }
 
-export function VerifyForm({ email, onSuccess }: Props) {
-  const handleSubmit = (e: React.FormEvent) => {
+export function VerifyForm({ verifyData, onSuccess }: Props) {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // В реальном приложении здесь была бы проверка кода
+    const formData = new FormData(e.target as HTMLFormElement);
+    const code = formData.get('code') as string;
+    await authService.verify({ userId: verifyData.userId, code });
     onSuccess();
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <p className="text-sm text-muted-foreground">Мы отправили код подтверждения на {email}</p>
+      <p className="text-sm text-muted-foreground">
+        Мы отправили код подтверждения на {verifyData.email}
+      </p>
       <div className="space-y-2">
         <Input
           id="code"

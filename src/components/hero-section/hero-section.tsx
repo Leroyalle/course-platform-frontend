@@ -14,7 +14,7 @@ export const HeroSection = observer(() => {
     await profileStore.logout();
     await deleteCookie('token');
   };
-
+  console.log(profileStore.me?.value);
   return (
     <header className="mb-10">
       <div className="flex justify-between items-center">
@@ -24,7 +24,7 @@ export const HeroSection = observer(() => {
             Основное программирование с нашими курсами под руководством экспертов
           </p>
         </div>
-        {profileStore.me?.value ? (
+        {profileStore.me?.state === 'fulfilled' && profileStore.me?.value.email ? (
           <Button onClick={handleLogout}>Выйти</Button>
         ) : (
           <Button onClick={() => setIsAuthOpen(true)}>Войти</Button>

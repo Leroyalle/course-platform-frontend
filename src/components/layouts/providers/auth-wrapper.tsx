@@ -16,7 +16,7 @@ export const AuthWrapper: React.FC<Props> = observer(({ children }) => {
     });
   }, []);
 
-  if (isInitializing || profileStore.me?.state === 'pending') {
+  if (isInitializing || (profileStore.me?.state === 'pending' && isInitializing)) {
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
   }
 

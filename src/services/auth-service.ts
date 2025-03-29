@@ -1,4 +1,4 @@
-import { Login, Register, User, UserWithToken } from '@/types';
+import { Login, Register, RegisterDto, User, UserWithToken, Verify } from '@/types';
 import { instance } from './instace';
 
 class AuthService {
@@ -7,7 +7,11 @@ class AuthService {
   }
 
   async register(data: Register) {
-    return (await instance.post('/auth/register', data)).data;
+    return (await instance.post<RegisterDto>('/auth/register', data)).data;
+  }
+
+  async verify(data: Verify) {
+    return (await instance.post('/auth/verify', data)).data;
   }
 
   async current() {
