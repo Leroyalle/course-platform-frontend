@@ -29,19 +29,27 @@ export const AuthModal = observer(({ isOpen, onClose }: Props) => {
   console.log(profileStore.me?.value);
 
   const handleRegister = async (data: { name: string; email: string; password: string }) => {
-    const { userId } = await authService.register(data);
-    setVerifyData({
-      email: data.email,
-      userId,
-    });
-    setView('verify');
+    try {
+      const { userId } = await authService.register(data);
+      setVerifyData({
+        email: data.email,
+        userId,
+      });
+      setView('verify');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleLogin = async (data: Login) => {
-    const { token } = await authService.login(data);
-    await createCookie('token', token);
-    await profileStore.current();
-    onClose();
+    try {
+      const { token } = await authService.login(data);
+      await createCookie('token', token);
+      await profileStore.current();
+      onClose();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

@@ -10,7 +10,7 @@ export function CourseHeader({ course }: CourseHeaderProps) {
     <>
       <div className="rounded-lg overflow-hidden mb-6">
         <img
-          src={course.image || '/placeholder.svg'}
+          src={course.image || '/placeholder.png'}
           alt={course.title}
           className="w-full h-auto"
         />

@@ -15,11 +15,7 @@ export function CtaSection() {
           <Button size="lg">Посмотреть все курсы</Button>
         </div>
         <div className="flex-1">
-          <img
-            src="/placeholder.svg?height=300&width=500"
-            alt="Coding students"
-            className="rounded-lg w-full"
-          />
+          <img src="/placeholder.png" alt="Coding students" className="rounded-lg w-full" />
         </div>
       </div>
     </section>

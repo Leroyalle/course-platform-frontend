@@ -13,10 +13,14 @@ interface Props {
 export function VerifyForm({ verifyData, onSuccess }: Props) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
-    const code = formData.get('code') as string;
-    await authService.verify({ userId: verifyData.userId, code });
-    onSuccess();
+    try {
+      const formData = new FormData(e.target as HTMLFormElement);
+      const code = formData.get('code') as string;
+      await authService.verify({ userId: verifyData.userId, code });
+      onSuccess();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

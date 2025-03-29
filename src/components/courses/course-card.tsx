@@ -19,7 +19,7 @@ export function CourseCard({ course }: CourseCardProps) {
     <Card className="overflow-hidden flex flex-col">
       <div className="aspect-video w-full overflow-hidden">
         <img
-          src={course.image || '/placeholder.svg'}
+          src={course.image || '/placeholder.png'}
           alt={course.title}
           className="w-full h-full object-cover transition-transform hover:scale-105"
         />
