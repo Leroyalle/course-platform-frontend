@@ -37,7 +37,7 @@ export const LessonWrapper: React.FC<Props> = observer(({ courseId, lessonId }) 
         <Link href={`/courses/${courseId}`}>
           <Button variant="outline" className="flex items-center gap-1">
             <ChevronLeft className="h-4 w-4" />
-            Back to Course
+            Вернуться к курсу
           </Button>
         </Link>
         <h1 className="text-2xl font-bold">{lesson.course.title}</h1>

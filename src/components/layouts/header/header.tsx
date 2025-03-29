@@ -11,7 +11,9 @@ export const Header: FC<Props> = ({ className }) => {
     <div className={clsx('', className)}>
       <nav className="border-b">
         <div className="container mx-auto py-4 flex justify-between items-center">
-          <div className="font-bold text-xl">Leroyalle</div>
+          <Link href="/" className="font-bold text-xl">
+            Leroyalle
+          </Link>
           <div className="flex items-center gap-6">
             <Link href="/" className="text-sm hover:text-primary">
               Home

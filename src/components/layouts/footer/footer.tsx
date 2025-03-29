@@ -12,9 +12,7 @@ export const Footer: FC<Props> = ({ className }) => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <h3 className="font-bold mb-4">Leroyalle</h3>
-            <p className="text-sm text-muted-foreground">
-              Expert-led programming courses to help you advance your career.
-            </p>
+            <p className="text-sm text-muted-foreground">Развивайтесь вместе с нами.</p>
           </div>
           <div>
             <h3 className="font-bold mb-4">Courses</h3>
@@ -44,7 +42,7 @@ export const Footer: FC<Props> = ({ className }) => {
           </div>
         </div>
         <div className="mt-8 pt-8 border-t text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Leroyalle. All rights reserved.
+          © {new Date().getFullYear()} Leroyalle. Все права защищены.
         </div>
       </div>
     </footer>
