@@ -59,7 +59,7 @@ export const LessonWrapper: React.FC<Props> = observer(({ courseId, lessonId }) 
           />
         </div>
         <div className="lg:col-span-1">
-          <LessonSidebar />
+          <LessonSidebar courseId={courseId} lessonId={lessonId} isCompleted={lesson.completed} />
         </div>
       </div>
     </div>

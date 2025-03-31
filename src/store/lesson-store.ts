@@ -20,6 +20,18 @@ export class LessonStore {
       throw error;
     }
   }
+
+  async toggleLessonCompleted() {
+    if (this.lesson?.state === 'fulfilled') {
+      const updatedLesson = {
+        ...this.lesson.value,
+        completed: !this.lesson.value.completed,
+      };
+
+      // Обновляем весь observable
+      this.lesson = fromPromise(Promise.resolve(updatedLesson));
+    }
+  }
 }
 
 export const lessonStore = new LessonStore();

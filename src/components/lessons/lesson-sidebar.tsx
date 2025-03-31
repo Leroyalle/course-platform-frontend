@@ -1,13 +1,29 @@
+'use client';
 import { Card } from '@/components/ui/card';
 import { Button } from '../ui/button';
+import { observer } from 'mobx-react-lite';
+import { progressService } from '@/services';
+import { FC } from 'react';
+import { lessonStore, profileStore } from '@/store';
 
-export function LessonSidebar() {
+interface Props {
+  courseId: string;
+  lessonId: string;
+  isCompleted: boolean;
+}
+
+export const LessonSidebar: FC<Props> = observer(({ courseId, lessonId, isCompleted }) => {
   const sections = [
     'Объявление переменных',
     'Примитивные типы данных',
     'Сложные типы данных',
     'Преобразование типов',
   ];
+
+  const handleToggleLessonCompleted = async () => {
+    await progressService.toggleLessonCompleted(courseId, lessonId);
+    lessonStore.toggleLessonCompleted();
+  };
 
   return (
     <>
@@ -37,9 +53,14 @@ export function LessonSidebar() {
         </ul>
       </Card>
 
-      <Button className="mt-4" size={'lg'}>
-        Пометить урок как пройденный
+      <Button
+        disabled={profileStore.me?.state === 'fulfilled' ? !profileStore.me?.value.email : true}
+        className={'mt-4'}
+        size={'lg'}
+        variant={isCompleted ? 'outline' : 'default'}
+        onClick={handleToggleLessonCompleted}>
+        {isCompleted ? 'Урок пройден' : 'Пометить урок как пройденный'}
       </Button>
     </>
   );
-}
+});

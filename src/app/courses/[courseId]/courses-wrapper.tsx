@@ -31,7 +31,6 @@ export const CoursesWrapper: FC<Props> = observer(({ courseId, className }) => {
   const course = courseStore.currentCourse.value;
   if (!course) return null;
 
-  console.log(course);
   const completedLessons = course.lessons.filter((lesson) => lesson.completed).length;
   const progressPercentage = (completedLessons / course.lessons.length) * 100;
 
