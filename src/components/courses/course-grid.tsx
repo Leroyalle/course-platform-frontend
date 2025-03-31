@@ -2,18 +2,27 @@
 import { CourseCard } from '@/components/courses/course-card';
 import { courseStore } from '@/store';
 import { observer } from 'mobx-react-lite';
+import { useEffect, useState } from 'react';
 
-export const CourseGrid = observer(() => {
-  if (courseStore.courses?.state === 'pending') {
+export const CourseGrid: React.FC = observer(() => {
+  const [, forceUpdate] = useState({});
+  useEffect(() => {
+    courseStore.getAll().then(() => forceUpdate({}));
+  }, []);
+
+  if (!courseStore.courses || courseStore.courses.state === 'pending') {
     return <div>Loading...</div>;
   }
-  if (courseStore.courses?.state === 'rejected') {
-    return <div>Error</div>;
+
+  if (courseStore.courses.state === 'rejected') {
+    return <div>Error loading courses</div>;
   }
 
-  const courses = courseStore.courses?.value;
+  const courses = courseStore.courses.value;
 
-  if (!courses) return;
+  if (!courses) {
+    return null;
+  }
 
   return (
     <section>

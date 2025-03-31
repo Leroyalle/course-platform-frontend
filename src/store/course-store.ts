@@ -2,7 +2,8 @@ import { courseService } from '@/services';
 import { CourseWithLessons } from '@/types';
 import { makeAutoObservable } from 'mobx';
 import { IPromiseBasedObservable, fromPromise } from 'mobx-utils';
-class CourseStore {
+
+export class CourseStore {
   constructor() {
     makeAutoObservable(this);
   }

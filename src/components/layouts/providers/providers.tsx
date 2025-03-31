@@ -7,6 +7,7 @@ import NextTopLoader from 'nextjs-toploader';
 interface Props {
   children: React.ReactNode;
 }
+
 export const Providers: React.FC<Props> = ({ children }) => {
   return (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>

@@ -1,18 +1,13 @@
 'use client';
 import { CourseGrid, CtaSection, HeroSection } from '@/components';
-import { courseStore } from '@/store';
 import clsx from 'clsx';
-import React, { useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
 
 interface Props {
   className?: string;
 }
 
-export const HomeWrapper: React.FC<Props> = ({ className }) => {
-  useEffect(() => {
-    courseStore.getAll();
-  }, []);
-
+export const HomeWrapper: React.FC<Props> = observer(({ className }) => {
   return (
     <div className={clsx('container mx-auto py-10', className)}>
       <HeroSection />
@@ -20,4 +15,4 @@ export const HomeWrapper: React.FC<Props> = ({ className }) => {
       <CtaSection />
     </div>
   );
-};
+});

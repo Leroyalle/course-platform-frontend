@@ -13,6 +13,7 @@ export const AuthWrapper: React.FC<Props> = observer(({ children }) => {
   useEffect(() => {
     profileStore.current().finally(() => {
       setIsInitializing(false);
+      console.log('finally resolved');
     });
   }, []);
 

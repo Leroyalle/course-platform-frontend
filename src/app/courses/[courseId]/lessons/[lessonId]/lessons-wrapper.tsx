@@ -4,9 +4,10 @@ import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
 import { LessonContent, LessonNavigation, LessonSidebar } from '@/components';
 import { getAdjacentLessons } from '@/lib/data/lessons';
-import { useEffect } from 'react';
-import { lessonStore } from '@/store';
+import { useEffect, useState } from 'react';
+
 import { observer } from 'mobx-react-lite';
+import { lessonStore } from '@/store';
 
 interface Props {
   courseId: string;
@@ -14,19 +15,23 @@ interface Props {
 }
 
 export const LessonWrapper: React.FC<Props> = observer(({ courseId, lessonId }) => {
-  useEffect(() => {
-    lessonStore.getById(lessonId);
-  }, [courseId, lessonId]);
+  const [, forceUpdate] = useState({});
 
-  if (lessonStore.lesson?.state === 'pending') {
+  useEffect(() => {
+    lessonStore.getById(lessonId).then(() => {
+      forceUpdate({});
+    });
+  }, [lessonId]);
+
+  if (!lessonStore.lesson || lessonStore.lesson.state === 'pending') {
     return <div>Loading...</div>;
   }
 
-  if (lessonStore.lesson?.state === 'rejected') {
-    return <div>Error</div>;
+  if (lessonStore.lesson.state === 'rejected') {
+    return <div>Error loading lesson</div>;
   }
-  const lesson = lessonStore.lesson?.value;
 
+  const lesson = lessonStore.lesson.value;
   if (!lesson) return null;
 
   const { previousLesson, nextLesson } = getAdjacentLessons(courseId, lessonId);

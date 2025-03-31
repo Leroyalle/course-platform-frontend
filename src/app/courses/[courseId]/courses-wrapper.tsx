@@ -1,10 +1,10 @@
 'use client';
-import { useEffect, type FC } from 'react';
+import { useEffect, useState, type FC } from 'react';
 import { clsx } from 'clsx';
 import { CourseContent, CourseHeader, CourseInstructor, CourseSidebar } from '@/components';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
-import { courseStore } from '@/store';
 import { observer } from 'mobx-react-lite';
+import { courseStore } from '@/store';
 
 interface Props {
   courseId: string;
@@ -12,21 +12,26 @@ interface Props {
 }
 
 export const CoursesWrapper: FC<Props> = observer(({ courseId, className }) => {
+  const [, forceUpdate] = useState({});
+
   useEffect(() => {
-    courseStore.getById(courseId);
+    courseStore.getById(courseId).then(() => {
+      forceUpdate({});
+    });
   }, [courseId]);
 
-  if (courseStore.currentCourse?.state === 'pending') {
+  if (!courseStore.currentCourse || courseStore.currentCourse.state === 'pending') {
     return <div>Loading...</div>;
   }
 
-  if (courseStore.currentCourse?.state === 'rejected') {
-    return <div>Error</div>;
+  if (courseStore.currentCourse.state === 'rejected') {
+    return <div>Error loading course</div>;
   }
 
-  const course = courseStore.currentCourse?.value;
+  const course = courseStore.currentCourse.value;
   if (!course) return null;
 
+  console.log(course);
   const completedLessons = course.lessons.filter((lesson) => lesson.completed).length;
   const progressPercentage = (completedLessons / course.lessons.length) * 100;
 

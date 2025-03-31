@@ -1,7 +1,9 @@
+'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import type { Lesson } from '@/types/lesson';
 import { LessonItem } from '../lessons/lesson-item';
+import { progressStore } from '@/store';
 
 interface CourseSidebarProps {
   courseId: string;
@@ -11,6 +13,10 @@ interface CourseSidebarProps {
 }
 
 export function CourseSidebar({ courseId, lessons, progress, completedCount }: CourseSidebarProps) {
+  if (progressStore.completedLessons?.state === 'pending') {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Card>
       <CardHeader>
